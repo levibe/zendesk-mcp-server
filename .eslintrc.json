@@ -1,0 +1,20 @@
+{
+	"env": {
+		"es2022": true,
+		"node": true
+	},
+	"extends": [
+		"standard"
+	],
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"rules": {
+		"indent": ["error", "tab"],
+		"semi": ["error", "never"],
+		"no-extra-semi": "error",
+		"no-tabs": "off",
+		"no-mixed-spaces-and-tabs": "error"
+	}
+} 
