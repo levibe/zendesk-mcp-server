@@ -1,257 +1,257 @@
-import axios from 'axios';
+import axios from 'axios'
 
-    class ZendeskClient {
-      constructor() {
-        this.subdomain = process.env.ZENDESK_SUBDOMAIN;
-        this.email = process.env.ZENDESK_EMAIL;
-        this.apiToken = process.env.ZENDESK_API_TOKEN;
-        
-        if (!this.subdomain || !this.email || !this.apiToken) {
-          console.warn('Zendesk credentials not found in environment variables. Please set ZENDESK_SUBDOMAIN, ZENDESK_EMAIL, and ZENDESK_API_TOKEN.');
-        }
-      }
+class ZendeskClient {
+	constructor () {
+		this.subdomain = process.env.ZENDESK_SUBDOMAIN
+		this.email = process.env.ZENDESK_EMAIL
+		this.apiToken = process.env.ZENDESK_API_TOKEN
 
-      getBaseUrl() {
-        return `https://${this.subdomain}.zendesk.com/api/v2`;
-      }
+		if (!this.subdomain || !this.email || !this.apiToken) {
+			console.warn('Zendesk credentials not found in environment variables. Please set ZENDESK_SUBDOMAIN, ZENDESK_EMAIL, and ZENDESK_API_TOKEN.')
+		}
+	}
 
-      getAuthHeader() {
-        const auth = Buffer.from(`${this.email}/token:${this.apiToken}`).toString('base64');
-        return `Basic ${auth}`;
-      }
+	getBaseUrl () {
+		return `https://${this.subdomain}.zendesk.com/api/v2`
+	}
 
-      async request(method, endpoint, data = null, params = null) {
-        try {
-          if (!this.subdomain || !this.email || !this.apiToken) {
-            throw new Error('Zendesk credentials not configured. Please set environment variables.');
-          }
+	getAuthHeader () {
+		const auth = Buffer.from(`${this.email}/token:${this.apiToken}`).toString('base64')
+		return `Basic ${auth}`
+	}
 
-          const url = `${this.getBaseUrl()}${endpoint}`;
-          const headers = {
-            'Authorization': this.getAuthHeader(),
-            'Content-Type': 'application/json'
-          };
+	async request (method, endpoint, data = null, params = null) {
+		try {
+			if (!this.subdomain || !this.email || !this.apiToken) {
+				throw new Error('Zendesk credentials not configured. Please set environment variables.')
+			}
 
-          const response = await axios({
-            method,
-            url,
-            headers,
-            data,
-            params
-          });
+			const url = `${this.getBaseUrl()}${endpoint}`
+			const headers = {
+				Authorization: this.getAuthHeader(),
+				'Content-Type': 'application/json'
+			}
 
-          return response.data;
-        } catch (error) {
-          if (error.response) {
-            throw new Error(`Zendesk API Error: ${error.response.status} - ${JSON.stringify(error.response.data)}`);
-          }
-          throw error;
-        }
-      }
+			const response = await axios({
+				method,
+				url,
+				headers,
+				data,
+				params
+			})
 
-      // Tickets
-      async listTickets(params) {
-        return this.request('GET', '/tickets.json', null, params);
-      }
+			return response.data
+		} catch (error) {
+			if (error.response) {
+				throw new Error(`Zendesk API Error: ${error.response.status} - ${JSON.stringify(error.response.data)}`)
+			}
+			throw error
+		}
+	}
 
-      async getTicket(id) {
-        return this.request('GET', `/tickets/${id}.json`);
-      }
+	// Tickets
+	async listTickets (params) {
+		return this.request('GET', '/tickets.json', null, params)
+	}
 
-      async createTicket(data) {
-        return this.request('POST', '/tickets.json', { ticket: data });
-      }
+	async getTicket (id) {
+		return this.request('GET', `/tickets/${id}.json`)
+	}
 
-      async updateTicket(id, data) {
-        return this.request('PUT', `/tickets/${id}.json`, { ticket: data });
-      }
+	async createTicket (data) {
+		return this.request('POST', '/tickets.json', { ticket: data })
+	}
 
-      async deleteTicket(id) {
-        return this.request('DELETE', `/tickets/${id}.json`);
-      }
+	async updateTicket (id, data) {
+		return this.request('PUT', `/tickets/${id}.json`, { ticket: data })
+	}
 
-      // Users
-      async listUsers(params) {
-        return this.request('GET', '/users.json', null, params);
-      }
+	async deleteTicket (id) {
+		return this.request('DELETE', `/tickets/${id}.json`)
+	}
 
-      async getUser(id) {
-        return this.request('GET', `/users/${id}.json`);
-      }
+	// Users
+	async listUsers (params) {
+		return this.request('GET', '/users.json', null, params)
+	}
 
-      async createUser(data) {
-        return this.request('POST', '/users.json', { user: data });
-      }
+	async getUser (id) {
+		return this.request('GET', `/users/${id}.json`)
+	}
 
-      async updateUser(id, data) {
-        return this.request('PUT', `/users/${id}.json`, { user: data });
-      }
+	async createUser (data) {
+		return this.request('POST', '/users.json', { user: data })
+	}
 
-      async deleteUser(id) {
-        return this.request('DELETE', `/users/${id}.json`);
-      }
+	async updateUser (id, data) {
+		return this.request('PUT', `/users/${id}.json`, { user: data })
+	}
 
-      // Organizations
-      async listOrganizations(params) {
-        return this.request('GET', '/organizations.json', null, params);
-      }
+	async deleteUser (id) {
+		return this.request('DELETE', `/users/${id}.json`)
+	}
 
-      async getOrganization(id) {
-        return this.request('GET', `/organizations/${id}.json`);
-      }
+	// Organizations
+	async listOrganizations (params) {
+		return this.request('GET', '/organizations.json', null, params)
+	}
 
-      async createOrganization(data) {
-        return this.request('POST', '/organizations.json', { organization: data });
-      }
+	async getOrganization (id) {
+		return this.request('GET', `/organizations/${id}.json`)
+	}
 
-      async updateOrganization(id, data) {
-        return this.request('PUT', `/organizations/${id}.json`, { organization: data });
-      }
+	async createOrganization (data) {
+		return this.request('POST', '/organizations.json', { organization: data })
+	}
 
-      async deleteOrganization(id) {
-        return this.request('DELETE', `/organizations/${id}.json`);
-      }
+	async updateOrganization (id, data) {
+		return this.request('PUT', `/organizations/${id}.json`, { organization: data })
+	}
 
-      // Groups
-      async listGroups(params) {
-        return this.request('GET', '/groups.json', null, params);
-      }
+	async deleteOrganization (id) {
+		return this.request('DELETE', `/organizations/${id}.json`)
+	}
 
-      async getGroup(id) {
-        return this.request('GET', `/groups/${id}.json`);
-      }
+	// Groups
+	async listGroups (params) {
+		return this.request('GET', '/groups.json', null, params)
+	}
 
-      async createGroup(data) {
-        return this.request('POST', '/groups.json', { group: data });
-      }
+	async getGroup (id) {
+		return this.request('GET', `/groups/${id}.json`)
+	}
 
-      async updateGroup(id, data) {
-        return this.request('PUT', `/groups/${id}.json`, { group: data });
-      }
+	async createGroup (data) {
+		return this.request('POST', '/groups.json', { group: data })
+	}
 
-      async deleteGroup(id) {
-        return this.request('DELETE', `/groups/${id}.json`);
-      }
+	async updateGroup (id, data) {
+		return this.request('PUT', `/groups/${id}.json`, { group: data })
+	}
 
-      // Macros
-      async listMacros(params) {
-        return this.request('GET', '/macros.json', null, params);
-      }
+	async deleteGroup (id) {
+		return this.request('DELETE', `/groups/${id}.json`)
+	}
 
-      async getMacro(id) {
-        return this.request('GET', `/macros/${id}.json`);
-      }
+	// Macros
+	async listMacros (params) {
+		return this.request('GET', '/macros.json', null, params)
+	}
 
-      async createMacro(data) {
-        return this.request('POST', '/macros.json', { macro: data });
-      }
+	async getMacro (id) {
+		return this.request('GET', `/macros/${id}.json`)
+	}
 
-      async updateMacro(id, data) {
-        return this.request('PUT', `/macros/${id}.json`, { macro: data });
-      }
+	async createMacro (data) {
+		return this.request('POST', '/macros.json', { macro: data })
+	}
 
-      async deleteMacro(id) {
-        return this.request('DELETE', `/macros/${id}.json`);
-      }
+	async updateMacro (id, data) {
+		return this.request('PUT', `/macros/${id}.json`, { macro: data })
+	}
 
-      // Views
-      async listViews(params) {
-        return this.request('GET', '/views.json', null, params);
-      }
+	async deleteMacro (id) {
+		return this.request('DELETE', `/macros/${id}.json`)
+	}
 
-      async getView(id) {
-        return this.request('GET', `/views/${id}.json`);
-      }
+	// Views
+	async listViews (params) {
+		return this.request('GET', '/views.json', null, params)
+	}
 
-      async createView(data) {
-        return this.request('POST', '/views.json', { view: data });
-      }
+	async getView (id) {
+		return this.request('GET', `/views/${id}.json`)
+	}
 
-      async updateView(id, data) {
-        return this.request('PUT', `/views/${id}.json`, { view: data });
-      }
+	async createView (data) {
+		return this.request('POST', '/views.json', { view: data })
+	}
 
-      async deleteView(id) {
-        return this.request('DELETE', `/views/${id}.json`);
-      }
+	async updateView (id, data) {
+		return this.request('PUT', `/views/${id}.json`, { view: data })
+	}
 
-      // Triggers
-      async listTriggers(params) {
-        return this.request('GET', '/triggers.json', null, params);
-      }
+	async deleteView (id) {
+		return this.request('DELETE', `/views/${id}.json`)
+	}
 
-      async getTrigger(id) {
-        return this.request('GET', `/triggers/${id}.json`);
-      }
+	// Triggers
+	async listTriggers (params) {
+		return this.request('GET', '/triggers.json', null, params)
+	}
 
-      async createTrigger(data) {
-        return this.request('POST', '/triggers.json', { trigger: data });
-      }
+	async getTrigger (id) {
+		return this.request('GET', `/triggers/${id}.json`)
+	}
 
-      async updateTrigger(id, data) {
-        return this.request('PUT', `/triggers/${id}.json`, { trigger: data });
-      }
+	async createTrigger (data) {
+		return this.request('POST', '/triggers.json', { trigger: data })
+	}
 
-      async deleteTrigger(id) {
-        return this.request('DELETE', `/triggers/${id}.json`);
-      }
+	async updateTrigger (id, data) {
+		return this.request('PUT', `/triggers/${id}.json`, { trigger: data })
+	}
 
-      // Automations
-      async listAutomations(params) {
-        return this.request('GET', '/automations.json', null, params);
-      }
+	async deleteTrigger (id) {
+		return this.request('DELETE', `/triggers/${id}.json`)
+	}
 
-      async getAutomation(id) {
-        return this.request('GET', `/automations/${id}.json`);
-      }
+	// Automations
+	async listAutomations (params) {
+		return this.request('GET', '/automations.json', null, params)
+	}
 
-      async createAutomation(data) {
-        return this.request('POST', '/automations.json', { automation: data });
-      }
+	async getAutomation (id) {
+		return this.request('GET', `/automations/${id}.json`)
+	}
 
-      async updateAutomation(id, data) {
-        return this.request('PUT', `/automations/${id}.json`, { automation: data });
-      }
+	async createAutomation (data) {
+		return this.request('POST', '/automations.json', { automation: data })
+	}
 
-      async deleteAutomation(id) {
-        return this.request('DELETE', `/automations/${id}.json`);
-      }
+	async updateAutomation (id, data) {
+		return this.request('PUT', `/automations/${id}.json`, { automation: data })
+	}
 
-      // Search
-      async search(query, params = {}) {
-        return this.request('GET', '/search.json', null, { query, ...params });
-      }
+	async deleteAutomation (id) {
+		return this.request('DELETE', `/automations/${id}.json`)
+	}
 
-      // Help Center
-      async listArticles(params) {
-        return this.request('GET', '/help_center/articles.json', null, params);
-      }
+	// Search
+	async search (query, params = {}) {
+		return this.request('GET', '/search.json', null, { query, ...params })
+	}
 
-      async getArticle(id) {
-        return this.request('GET', `/help_center/articles/${id}.json`);
-      }
+	// Help Center
+	async listArticles (params) {
+		return this.request('GET', '/help_center/articles.json', null, params)
+	}
 
-      async createArticle(data, sectionId) {
-        return this.request('POST', `/help_center/sections/${sectionId}/articles.json`, { article: data });
-      }
+	async getArticle (id) {
+		return this.request('GET', `/help_center/articles/${id}.json`)
+	}
 
-      async updateArticle(id, data) {
-        return this.request('PUT', `/help_center/articles/${id}.json`, { article: data });
-      }
+	async createArticle (data, sectionId) {
+		return this.request('POST', `/help_center/sections/${sectionId}/articles.json`, { article: data })
+	}
 
-      async deleteArticle(id) {
-        return this.request('DELETE', `/help_center/articles/${id}.json`);
-      }
+	async updateArticle (id, data) {
+		return this.request('PUT', `/help_center/articles/${id}.json`, { article: data })
+	}
 
-      // Talk
-      async getTalkStats() {
-        return this.request('GET', '/channels/voice/stats.json');
-      }
+	async deleteArticle (id) {
+		return this.request('DELETE', `/help_center/articles/${id}.json`)
+	}
 
-      // Chat
-      async listChats(params) {
-        return this.request('GET', '/chats.json', null, params);
-      }
-    }
+	// Talk
+	async getTalkStats () {
+		return this.request('GET', '/channels/voice/stats.json')
+	}
 
-    export const zendeskClient = new ZendeskClient();
+	// Chat
+	async listChats (params) {
+		return this.request('GET', '/chats.json', null, params)
+	}
+}
+
+export const zendeskClient = new ZendeskClient()
