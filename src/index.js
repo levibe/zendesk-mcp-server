@@ -1,13 +1,15 @@
 #!/usr/bin/env node
-    import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-    import { server } from './server.js';
-    import dotenv from 'dotenv';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import dotenv from 'dotenv';
 
-    // Load environment variables
-    dotenv.config();
+// Load environment variables first
+dotenv.config();
 
-    console.log('Starting Zendesk API MCP server...');
+// Import server after environment variables are loaded
+const { server } = await import('./server.js');
 
-    // Start receiving messages on stdin and sending messages on stdout
-    const transport = new StdioServerTransport();
-    await server.connect(transport);
+console.log('Starting Zendesk API MCP server...');
+
+// Start receiving messages on stdin and sending messages on stdout
+const transport = new StdioServerTransport();
+await server.connect(transport);
