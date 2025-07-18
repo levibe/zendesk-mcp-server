@@ -8,8 +8,6 @@ dotenv.config()
 // Import server after environment variables are loaded
 const { server } = await import('./server.js')
 
-console.log('Starting Zendesk API MCP server...')
-
 // Start receiving messages on stdin and sending messages on stdout
 const transport = new StdioServerTransport()
 await server.connect(transport)
