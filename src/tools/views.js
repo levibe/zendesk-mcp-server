@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// View management tools for creating and managing ticket filtering views
 export const viewsTools = [
 	{
 		name: 'list_views',

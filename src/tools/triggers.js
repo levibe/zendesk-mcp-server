@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// Trigger automation tools for creating event-driven automated actions
 export const triggersTools = [
 	{
 		name: 'list_triggers',

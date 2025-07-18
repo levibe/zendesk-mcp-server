@@ -14,14 +14,14 @@ import { supportTools } from './tools/support.js'
 import { talkTools } from './tools/talk.js'
 import { chatTools } from './tools/chat.js'
 
-// Create an MCP server for Zendesk API
+// Initialize MCP server with Zendesk API capabilities
 const server = new McpServer({
 	name: 'Zendesk API',
 	version: '1.0.0',
 	description: 'MCP Server for interacting with the Zendesk API'
 })
 
-// Register all tools
+// Aggregate all Zendesk API tools from individual modules
 const allTools = [
 	...ticketsTools,
 	...usersTools,
@@ -38,7 +38,7 @@ const allTools = [
 	...chatTools
 ]
 
-// Register each tool with the server
+// Register each tool with the MCP server for client access
 allTools.forEach(tool => {
 	server.tool(
 		tool.name,
@@ -48,7 +48,7 @@ allTools.forEach(tool => {
 	)
 })
 
-// Add a resource for Zendesk API documentation
+// Provide dynamic documentation resources accessible via zendesk://docs/{section} URIs
 server.resource(
 	'documentation',
 	new ResourceTemplate('zendesk://docs/{section}', { list: undefined }),
@@ -70,6 +70,7 @@ server.resource(
 			overview: 'The Zendesk API is a RESTful API that uses JSON for serialization. It provides access to Zendesk Support, Talk, Chat, and Guide products.'
 		}
 
+		// Return overview when no specific section requested
 		if (!section || section === 'all') {
 			return {
 				contents: [{
@@ -79,6 +80,7 @@ server.resource(
 			}
 		}
 
+		// Return specific section documentation if it exists
 		if (docs[section]) {
 			return {
 				contents: [{
@@ -88,6 +90,7 @@ server.resource(
 			}
 		}
 
+		// Handle invalid section requests with helpful error message
 		return {
 			contents: [{
 				uri: uri.href,

@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// Organization management tools for creating and managing customer organizations
 export const organizationsTools = [
 	{
 		name: 'list_organizations',

@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// Ticket management tools for creating, reading, updating, and deleting support tickets
 export const ticketsTools = [
 	{
 		name: 'list_tickets',

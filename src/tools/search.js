@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// Search tools for finding tickets, users, organizations, and other Zendesk data
 export const searchTools = [
 	{
 		name: 'search',

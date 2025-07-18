@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// Help Center tools for managing knowledge base articles, categories, and sections
 export const helpCenterTools = [
 	{
 		name: 'list_articles',

@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// Zendesk Talk tools for managing phone system statistics and call data
 export const talkTools = [
 	{
 		name: 'get_talk_stats',

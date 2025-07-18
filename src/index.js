@@ -8,9 +8,9 @@ import { fileURLToPath } from 'url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 dotenv.config({ path: join(__dirname, '../.env') })
 
-// Import server after environment variables are loaded
+// Import server after environment is configured
 const { server } = await import('./server.js')
 
-// Start receiving messages on stdin and sending messages on stdout
+// Initialize MCP transport - uses stdin/stdout for communication
 const transport = new StdioServerTransport()
 await server.connect(transport)

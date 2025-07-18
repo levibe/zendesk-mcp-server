@@ -1,27 +1,44 @@
 import axios from 'axios'
 
+/**
+ * Centralized Zendesk API client with authentication and request handling
+ * Provides methods for all major Zendesk API endpoints across Support, Talk, Chat, and Guide
+ */
 class ZendeskClient {
 	constructor () {
+		// Load Zendesk credentials from environment variables
 		this.subdomain = process.env.ZENDESK_SUBDOMAIN
 		this.email = process.env.ZENDESK_EMAIL
 		this.apiToken = process.env.ZENDESK_API_TOKEN
 
+		// Warn if credentials are missing (but allow instantiation for testing)
 		if (!this.subdomain || !this.email || !this.apiToken) {
 			console.warn('Zendesk credentials not found in environment variables. Please set ZENDESK_SUBDOMAIN, ZENDESK_EMAIL, and ZENDESK_API_TOKEN.')
 		}
 	}
 
+	// Construct the base URL for Zendesk API v2 endpoints
 	getBaseUrl () {
 		return `https://${this.subdomain}.zendesk.com/api/v2`
 	}
 
+	// Generate Basic Authentication header using email/token format
 	getAuthHeader () {
 		const auth = Buffer.from(`${this.email}/token:${this.apiToken}`).toString('base64')
 		return `Basic ${auth}`
 	}
 
+	/**
+	 * Core HTTP request method with authentication and error handling
+	 * @param {string} method - HTTP method (GET, POST, PUT, DELETE)
+	 * @param {string} endpoint - API endpoint path (e.g., '/tickets.json')
+	 * @param {Object} data - Request body data for POST/PUT requests
+	 * @param {Object} params - URL query parameters
+	 * @returns {Object} Response data from Zendesk API
+	 */
 	async request (method, endpoint, data = null, params = null) {
 		try {
+			// Validate credentials before making requests
 			if (!this.subdomain || !this.email || !this.apiToken) {
 				throw new Error('Zendesk credentials not configured. Please set environment variables.')
 			}
@@ -42,6 +59,7 @@ class ZendeskClient {
 
 			return response.data
 		} catch (error) {
+			// Provide detailed error messages for API failures
 			if (error.response) {
 				throw new Error(`Zendesk API Error: ${error.response.status} - ${JSON.stringify(error.response.data)}`)
 			}
@@ -49,7 +67,7 @@ class ZendeskClient {
 		}
 	}
 
-	// Tickets
+	// === TICKETS API ===
 	async listTickets (params) {
 		return this.request('GET', '/tickets.json', null, params)
 	}
@@ -70,7 +88,7 @@ class ZendeskClient {
 		return this.request('DELETE', `/tickets/${id}.json`)
 	}
 
-	// Users
+	// === USERS API ===
 	async listUsers (params) {
 		return this.request('GET', '/users.json', null, params)
 	}
@@ -91,7 +109,7 @@ class ZendeskClient {
 		return this.request('DELETE', `/users/${id}.json`)
 	}
 
-	// Organizations
+	// === ORGANIZATIONS API ===
 	async listOrganizations (params) {
 		return this.request('GET', '/organizations.json', null, params)
 	}
@@ -112,7 +130,7 @@ class ZendeskClient {
 		return this.request('DELETE', `/organizations/${id}.json`)
 	}
 
-	// Groups
+	// === GROUPS API ===
 	async listGroups (params) {
 		return this.request('GET', '/groups.json', null, params)
 	}
@@ -133,7 +151,7 @@ class ZendeskClient {
 		return this.request('DELETE', `/groups/${id}.json`)
 	}
 
-	// Macros
+	// === MACROS API ===
 	async listMacros (params) {
 		return this.request('GET', '/macros.json', null, params)
 	}
@@ -154,7 +172,7 @@ class ZendeskClient {
 		return this.request('DELETE', `/macros/${id}.json`)
 	}
 
-	// Views
+	// === VIEWS API ===
 	async listViews (params) {
 		return this.request('GET', '/views.json', null, params)
 	}
@@ -175,7 +193,7 @@ class ZendeskClient {
 		return this.request('DELETE', `/views/${id}.json`)
 	}
 
-	// Triggers
+	// === TRIGGERS API ===
 	async listTriggers (params) {
 		return this.request('GET', '/triggers.json', null, params)
 	}
@@ -196,7 +214,7 @@ class ZendeskClient {
 		return this.request('DELETE', `/triggers/${id}.json`)
 	}
 
-	// Automations
+	// === AUTOMATIONS API ===
 	async listAutomations (params) {
 		return this.request('GET', '/automations.json', null, params)
 	}
@@ -217,12 +235,12 @@ class ZendeskClient {
 		return this.request('DELETE', `/automations/${id}.json`)
 	}
 
-	// Search
+	// === SEARCH API ===
 	async search (query, params = {}) {
 		return this.request('GET', '/search.json', null, { query, ...params })
 	}
 
-	// Help Center
+	// === HELP CENTER API ===
 	async listArticles (params) {
 		return this.request('GET', '/help_center/articles.json', null, params)
 	}
@@ -243,15 +261,16 @@ class ZendeskClient {
 		return this.request('DELETE', `/help_center/articles/${id}.json`)
 	}
 
-	// Talk
+	// === TALK API ===
 	async getTalkStats () {
 		return this.request('GET', '/channels/voice/stats.json')
 	}
 
-	// Chat
+	// === CHAT API ===
 	async listChats (params) {
 		return this.request('GET', '/chats.json', null, params)
 	}
 }
 
+// Export singleton instance for use across the application
 export const zendeskClient = new ZendeskClient()

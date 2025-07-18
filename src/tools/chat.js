@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// Zendesk Chat tools for managing chat conversations and live chat data
 export const chatTools = [
 	{
 		name: 'list_chats',

@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// Agent group management tools for organizing support agents into teams
 export const groupsTools = [
 	{
 		name: 'list_groups',

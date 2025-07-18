@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// Automation management tools for creating time-based automated actions
 export const automationsTools = [
 	{
 		name: 'list_automations',

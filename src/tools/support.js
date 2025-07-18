@@ -1,8 +1,9 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// Core support functionality tools for fundamental Zendesk Support operations
 export const supportTools = [
-	// This is a placeholder for additional Support-specific tools
+	// Placeholder for additional Support-specific tools
 	// Most Support functionality is covered by the other tool modules
 	{
 		name: 'support_info',

@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// User and agent management tools for managing end users, agents, and administrators
 export const usersTools = [
 	{
 		name: 'list_users',

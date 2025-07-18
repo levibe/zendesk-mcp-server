@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zendeskClient } from '../zendesk-client.js'
 
+// Macro management tools for creating and managing ticket action shortcuts
 export const macrosTools = [
 	{
 		name: 'list_macros',
